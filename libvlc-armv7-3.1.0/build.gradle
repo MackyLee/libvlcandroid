@@ -1,2 +1,25 @@
+apply plugin: 'maven'
 configurations.maybeCreate("default")
 artifacts.add("default", file('libvlc-armv7-3.1.0.aar'))
+
+
+ext {
+    // 这个路径是从Github上Clone的本地路径
+    GITHUB_REPO_PATH = "D:\\AndroidProjects\\libvlcandroid"
+    // 在用到的代码上依赖的代码compile 'com.andrjhf.storage:encrypt:1.0.0'
+    PUBLISH_GROUP_ID = 'com.github.MackyLee'
+    PUBLISH_ARTIFACT_ID = 'libvlc-armv7'
+    PUBLISH_VERSION = '3.1.0'
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        def deployPath = file(project.GITHUB_REPO_PATH)
+        repository(url: "file://${deployPath.absolutePath}")
+        pom.project {
+            groupId project.PUBLISH_GROUP_ID
+            artifactId project.PUBLISH_ARTIFACT_ID
+            version project.PUBLISH_VERSION
+        }
+    }
+}
